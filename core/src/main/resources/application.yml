@@ -1,0 +1,35 @@
+server:
+  port: 8888
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:rabbitmq;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  rabbitmq:
+    password: guest
+    username: guest
+    host: localhost
+    port: 5672
+
+rabbitmq:
+  exchange: services.exchange
+  routingKey:
+    orderCreatedDB: orderCreatedRoutingKeyDB
+    paymentStatusUpdate: paymentStatusUpdateRoutingKey
+    orderExistence: orderExistenceRoutingKey
+    orderCreatedNotify: orderCreatedNotification
+    orderPaidNotify: orderPaidNotification
+  queue:
+    orderCreatedDB: orderCreatedQueueDB
+    paymentStatusUpdate: paymentStatusUpdateQueue
+    orderExistence: orderExistenceQueue

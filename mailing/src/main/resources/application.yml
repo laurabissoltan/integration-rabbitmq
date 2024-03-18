@@ -1,0 +1,29 @@
+server:
+  port: 8083
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: emailFrom@gmail.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+rabbitmq:
+  exchange: servicesExchange
+  queue:
+    orderCreatedNotify: orderCreatedNotificationQueue
+    orderPaidNotify: orderPaidNotificationQueue
+  routingKey:
+    orderCreatedNotify: orderCreatedNotification
+    orderPaidNotify: orderPaidNotification

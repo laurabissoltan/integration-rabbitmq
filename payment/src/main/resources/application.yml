@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+rabbitmq:
+  exchange: topicExchange
+  queue:
+    paymentStatusUpdate: paymentStatusUpdateQueue
+    orderExistence: orderExistenceQueue
+  routingKey:
+    paymentStatusUpdate: paymentStatusUpdateRoutingKey
+    orderExistence: orderExistenceRoutingKey
