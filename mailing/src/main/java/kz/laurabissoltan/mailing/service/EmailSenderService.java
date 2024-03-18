@@ -1,6 +1,7 @@
-package kz.laurabissoltan.mailing;
+package kz.laurabissoltan.mailing.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kz.laurabissoltan.mailing.dto.OrderMessage;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -19,6 +20,9 @@ public class EmailSenderService {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Value("${spring.mail.username}")
     private String fromEmailAddress;
@@ -43,11 +47,6 @@ public class EmailSenderService {
         mailSender.send(message);
     }
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-//  @RabbitListener(queues = "${rabbitmq.queue.orderCreated}")
-
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "${rabbitmq.queue.orderCreatedNotify}", durable = "true"),
             exchange = @Exchange(value = "${rabbitmq.exchange}", type = "topic"),
@@ -65,12 +64,11 @@ public class EmailSenderService {
         }
     }
 
- //   @RabbitListener(queues = "${rabbitmq.queue.orderPaid}")
        @RabbitListener(bindings = @QueueBinding(
          value = @Queue(value = "${rabbitmq.queue.orderPaidNotify}", durable = "true"),
          exchange = @Exchange(value = "${rabbitmq.exchange}", type = "topic"),
          key = "${rabbitmq.routingKey.orderPaidNotify}"))
-    public void receiveOrderPaidMessage(String message) {
+       public void receiveOrderPaidMessage(String message) {
         try {
           //  System.out.println("received message in the mailing" + message);
             OrderMessage orderMessage = objectMapper.readValue(message, OrderMessage.class);

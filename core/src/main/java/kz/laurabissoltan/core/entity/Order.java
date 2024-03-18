@@ -1,4 +1,4 @@
-package kz.laurabissoltan.core;
+package kz.laurabissoltan.core.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

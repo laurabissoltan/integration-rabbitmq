@@ -1,4 +1,4 @@
-package kz.laurabissoltan.payment;
+package kz.laurabissoltan.payment.exception;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

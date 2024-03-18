@@ -1,5 +1,6 @@
-package kz.laurabissoltan.order;
+package kz.laurabissoltan.order.service;
 
+import kz.laurabissoltan.order.dto.OrderRequest;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,4 @@ public class OrderMessagingService {
     public void sendOrder(OrderRequest orderRequest) {
         rabbitTemplate.convertAndSend(orderCoreExchange, orderCoreRoutingKey, orderRequest);
     }
-
-
-
 }

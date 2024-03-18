@@ -1,4 +1,4 @@
-package kz.laurabissoltan.core;
+package kz.laurabissoltan.core.dto;
 
 
 import lombok.AllArgsConstructor;

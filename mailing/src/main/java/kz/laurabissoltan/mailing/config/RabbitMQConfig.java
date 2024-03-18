@@ -1,4 +1,4 @@
-package kz.laurabissoltan.mailing;
+package kz.laurabissoltan.mailing.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

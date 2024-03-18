@@ -1,5 +1,6 @@
-package kz.laurabissoltan.payment;
+package kz.laurabissoltan.payment.service;
 
+import kz.laurabissoltan.payment.dto.PaymentRequest;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,12 +34,10 @@ public class PaymentService {
         boolean orderExists = checkOrderExistence(orderId);
         if (!orderExists) {
             sendPaymentStatus(orderId, false);
-            throw new IllegalArgumentException("Order does not exist.");
+            throw new IllegalArgumentException("Order does not exist");
         }
-
         System.out.println("Processing payment with card number: " + paymentRequest.getCardNumber());
         sendPaymentStatus(orderId, true);
     }
-
 }
 

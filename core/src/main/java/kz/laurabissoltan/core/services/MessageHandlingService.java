@@ -1,6 +1,9 @@
-package kz.laurabissoltan.core;
+package kz.laurabissoltan.core.services;
 
-import kz.laurabissoltan.order.OrderRequest;
+import kz.laurabissoltan.core.dto.OrderEvent;
+import kz.laurabissoltan.core.entity.Order;
+import kz.laurabissoltan.core.repository.OrderRepository;
+import kz.laurabissoltan.order.dto.OrderRequest;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -13,48 +16,38 @@ import java.util.Optional;
 @Service
 public class MessageHandlingService {
     @Autowired
-    private CoreOrderRepository coreOrderRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
-    private OrderEventPublisher orderEventPublisher;
-
-/*    @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "paymentCompletedQueue", durable = "true"),
-            exchange = @Exchange(value = "servicesExchange", type = "topic"),
-            key = "payment.completed"
-    ))*/
-
-
-//    @RabbitListener(queues = "${rabbitmq.queue.orderCreatedToCore}")
+    private MessageSendingService messageSendingService;
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "${rabbitmq.queue.orderCreatedDB}", durable = "true"),
             exchange = @Exchange(value = "${rabbitmq.exchange}", type = "topic"),
             key = "${rabbitmq.routingKey.orderCreatedDB}"))
     public void receiveOrderUpdate(OrderRequest orderRequest) {
+
         //saving the order in the database
         Order order = new Order();
         order.setAmount(orderRequest.getAmount());
         order.setEmail(orderRequest.getEmail());
         order.setCreated(true);
-        coreOrderRepository.save(order);
+        orderRepository.save(order);
 
         //sending message about order creation to the mailing service
         OrderEvent orderEvent = new OrderEvent();
         orderEvent.setOrderId(order.getId());
         orderEvent.setEmail(order.getEmail());
-        orderEvent.setStatus(coreOrderRepository.existsById(order.getId()));
-        orderEventPublisher.sendCreatedMessage(orderEvent);
+        orderEvent.setStatus(orderRepository.existsById(order.getId()));
+        messageSendingService.sendCreatedMessage(orderEvent);
     }
-
-  //  @RabbitListener(queues = "${rabbitmq.queue.orderExistence}")
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "${rabbitmq.queue.orderExistence}", durable = "true"),
             exchange = @Exchange(value = "${rabbitmq.exchange}", type = "topic"),
             key = "${rabbitmq.routingKey.orderExistence}"))
     public Boolean receiveOrderCheck(Long orderId) { // Adjust parameter type as needed based on your message conversion setup
-        return coreOrderRepository.existsById(orderId);
+        return orderRepository.existsById(orderId);
     }
 
   //  @RabbitListener(queues = "${rabbitmq.queue.paymentStatusUpdate}")
@@ -68,17 +61,17 @@ public class MessageHandlingService {
         Long orderId = Long.valueOf(parts[0]);
         boolean paymentStatus = Boolean.parseBoolean(parts[1]);
 
-        Optional<Order> optionalOrder = coreOrderRepository.findById(orderId);
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
             order.setPaid(paymentStatus);
-            coreOrderRepository.save(order);
+            orderRepository.save(order);
 
             OrderEvent orderEvent = new OrderEvent();
             orderEvent.setOrderId(order.getId());
             orderEvent.setEmail(order.getEmail());
             orderEvent.setStatus(paymentStatus);
-            orderEventPublisher.sendPaidMessage(orderEvent);
+            messageSendingService.sendPaidMessage(orderEvent);
         } else {
             System.out.println("Order with ID " + orderId + " not found.");
         }

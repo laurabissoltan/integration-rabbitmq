@@ -1,4 +1,4 @@
-package kz.laurabissoltan.order;
+package kz.laurabissoltan.order.dto;
 
 
 import jakarta.validation.constraints.DecimalMin;

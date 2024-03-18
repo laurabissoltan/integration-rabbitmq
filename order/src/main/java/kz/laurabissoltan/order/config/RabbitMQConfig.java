@@ -1,4 +1,4 @@
-package kz.laurabissoltan.order;
+package kz.laurabissoltan.order.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

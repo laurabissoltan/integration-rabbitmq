@@ -1,4 +1,4 @@
-package kz.laurabissoltan.mailing;
+package kz.laurabissoltan.mailing.dto;
 
 
 import lombok.AllArgsConstructor;

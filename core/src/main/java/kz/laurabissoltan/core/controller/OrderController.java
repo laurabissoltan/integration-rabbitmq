@@ -1,5 +1,7 @@
-package kz.laurabissoltan.core;
+package kz.laurabissoltan.core.controller;
 
+import kz.laurabissoltan.core.entity.Order;
+import kz.laurabissoltan.core.services.OrderManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,34 +10,34 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/core")
-public class CoreOrderController {
+public class OrderController {
     @Autowired
-    CoreOrderService coreOrderService;
+    OrderManagementService orderManagementService;
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
-        return coreOrderService.createOrder(order);
+        return orderManagementService.createOrder(order);
     }
 
     @GetMapping("/orders/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Order order = coreOrderService.getOrderById(id).orElseThrow(()-> new RuntimeException("Order not found"));
+        Order order = orderManagementService.getOrderById(id).orElseThrow(()-> new RuntimeException("Order not found"));
         return ResponseEntity.ok().body(order);
     }
 
     @GetMapping("/orders")
     public List<Order> getAllOrders() {
-        return coreOrderService.getOrders();
+        return orderManagementService.getOrders();
     }
 
     @PostMapping("/orders/{id}")
     public ResponseEntity<Order> updataOrder(@PathVariable Long id, @RequestBody Order order) {
-        Order updatedOrder = coreOrderService.updateOrder(id, order);
+        Order updatedOrder = orderManagementService.updateOrder(id, order);
         return ResponseEntity.ok(updatedOrder);
     }
 
     @DeleteMapping("/orders/{id}")
     public void deleteOrder(@PathVariable Long id) {
-        coreOrderService.deleteOrder(id);
+        orderManagementService.deleteOrder(id);
     }
 }

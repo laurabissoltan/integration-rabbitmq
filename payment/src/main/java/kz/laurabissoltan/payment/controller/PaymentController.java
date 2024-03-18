@@ -1,6 +1,8 @@
-package kz.laurabissoltan.payment;
+package kz.laurabissoltan.payment.controller;
 
 import jakarta.validation.Valid;
+import kz.laurabissoltan.payment.dto.PaymentRequest;
+import kz.laurabissoltan.payment.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

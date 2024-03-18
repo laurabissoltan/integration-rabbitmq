@@ -1,4 +1,4 @@
-package kz.laurabissoltan.payment;
+package kz.laurabissoltan.payment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

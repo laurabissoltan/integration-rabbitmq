@@ -1,13 +1,14 @@
-package kz.laurabissoltan.core;
+package kz.laurabissoltan.core.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kz.laurabissoltan.core.dto.OrderEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderEventPublisher {
+public class MessageSendingService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 

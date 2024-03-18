@@ -1,4 +1,4 @@
-package kz.laurabissoltan.order;
+package kz.laurabissoltan.order.exception;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
