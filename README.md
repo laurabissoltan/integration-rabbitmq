@@ -7,10 +7,10 @@ and manage email notifications efficiently.
 
 ### Architecture Overview
 
-Core Service: Manages the application's database interactions, including storing and retrieving order and payment information.
-Order Service: Handles order creation. Sends messages to core service to save the order.
-Payment Service: Processes payments and communicates with the Core service to check and update payment status.
-Mailing Service: Sends email notifications related to order and payment events.
+<br />Core Service: Manages the application's database interactions, including storing and retrieving order and payment information.
+<br />Order Service: Handles order creation. Sends messages to core service to save the order.
+<br />Payment Service: Processes payments and communicates with the Core service to check and update payment status.
+<br />Mailing Service: Sends email notifications related to order and payment events.
 
 RabbitMQ facilitates messaging between these services, ensuring loose coupling and scalable communication.
 
