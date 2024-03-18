@@ -16,12 +16,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+
+    @Value("${rabbitmq.exchange}")
+    private String exchangeName;
+
     @Bean
-    public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory connectionFactory, MessageConverter jsonMessageConverter) {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
-        factory.setMessageConverter(jsonMessageConverter());
-        return factory;
+    public TopicExchange exchange() {
+        return new TopicExchange(exchangeName);
     }
 
    @Bean
@@ -35,46 +36,13 @@ public class RabbitMQConfig {
         template.setMessageConverter(jsonMessageConverter());
         return template;
     }
-   @Value("${rabbitmq.exchange}")
-    private String exchangeName;
-/*
-    @Value("${rabbitmq.queue.orderCreated}")
-    private String orderCreatedQueueName;
-
-    @Value("${rabbitmq.routingKey.orderCreated}")
-    private String orderCreatedRoutingKey;*/
-
-/*
-    @Bean
-    public Queue orderCreatedQueue() {
-        return new Queue(orderCreatedQueueName, true);
-    }*/
-
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(exchangeName);
+    public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory connectionFactory, MessageConverter jsonMessageConverter) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(jsonMessageConverter());
+        return factory;
     }
 
-/*    @Bean
-    public Binding binding(Queue orderCreatedQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(orderCreatedQueue).to(exchange).with(orderCreatedRoutingKey);
-    }*/
-
-
-/*    @Value("${rabbitmq.queue.orderPaid}")
-    private String orderPaidQueueName;
-
-    @Value("${rabbitmq.routingKey.orderPaid}")
-    private String orderPaidRoutingKey;
-
-    @Bean
-    public Queue orderPaidQueue() {
-        return new Queue(orderPaidQueueName, true);
-    }
-
-    @Bean
-    public Binding bindingPaid(Queue orderPaidQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(orderPaidQueue).to(exchange).with(orderPaidRoutingKey);
-    }*/
 }
