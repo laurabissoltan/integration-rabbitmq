@@ -62,6 +62,35 @@ public class MessageHandlingService {
         boolean paymentStatus = Boolean.parseBoolean(parts[1]);
 
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
+
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+
+            if (!order.isPaid() && paymentStatus) {
+                //updating database
+                order.setPaid(paymentStatus);
+                orderRepository.save(order);
+
+                //sending message to the mailing
+                OrderEvent orderEvent = new OrderEvent();
+                orderEvent.setOrderId(order.getId());
+                orderEvent.setEmail(order.getEmail());
+                orderEvent.setStatus(paymentStatus);
+                messageSendingService.sendPaidMessage(orderEvent);
+            } else {
+                System.out.println("Order with ID " + orderId + " is already paid or the paymentStatus is false.");
+            }
+        } else {
+            System.out.println("Order with ID " + orderId + " not found.");
+        }
+    }
+/*    public void handlePaymentStatus(String message) {
+        String[] parts = message.split(",");
+        Long orderId = Long.valueOf(parts[0]);
+        boolean paymentStatus = Boolean.parseBoolean(parts[1]);
+
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
             order.setPaid(paymentStatus);
@@ -75,5 +104,5 @@ public class MessageHandlingService {
         } else {
             System.out.println("Order with ID " + orderId + " not found.");
         }
-    }
+    }*/
 }
