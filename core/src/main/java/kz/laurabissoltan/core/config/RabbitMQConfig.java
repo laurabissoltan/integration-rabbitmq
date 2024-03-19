@@ -13,6 +13,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+
+    @Value("${rabbitmq.exchange}")
+    private String orderExchange;
+
+    @Bean
+    public TopicExchange orderExchange() {
+        return new TopicExchange(orderExchange);
+    }
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter jsonMessageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);

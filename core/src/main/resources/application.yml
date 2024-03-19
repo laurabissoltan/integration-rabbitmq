@@ -22,7 +22,7 @@ spring:
     port: 5672
 
 rabbitmq:
-  exchange: services.exchange
+  exchange: servicesExchange
   routingKey:
     orderCreatedDB: orderCreatedRoutingKeyDB
     paymentStatusUpdate: paymentStatusUpdateRoutingKey

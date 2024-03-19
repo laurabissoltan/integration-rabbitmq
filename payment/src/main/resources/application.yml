@@ -9,7 +9,7 @@ spring:
     password: guest
 
 rabbitmq:
-  exchange: topicExchange
+  exchange: servicesExchange
   queue:
     paymentStatusUpdate: paymentStatusUpdateQueue
     orderExistence: orderExistenceQueue
