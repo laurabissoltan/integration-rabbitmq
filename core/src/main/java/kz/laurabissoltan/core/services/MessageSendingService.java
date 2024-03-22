@@ -29,7 +29,7 @@ public class MessageSendingService {
         try {
             String message = objectMapper.writeValueAsString(orderEvent);
             rabbitTemplate.convertAndSend(exchange, orderCreatedRoutingKey, message);
-            System.out.println("Order creation message sent");
+            System.out.println("Order creation message sent to the mailing service");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to send order creation message");
@@ -40,10 +40,10 @@ public class MessageSendingService {
         try {
             String message = objectMapper.writeValueAsString(orderEvent);
             rabbitTemplate.convertAndSend(exchange, orderPaidRoutingKey, message);
-            System.out.println("Order creation message sent");
+            System.out.println("Order paid message sent to the mailing service");
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Failed to send order creation message");
+            System.err.println("Failed to send order paid message");
         }
     }
 }

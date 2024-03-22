@@ -21,7 +21,7 @@ RabbitMQ facilitates messaging between these services, ensuring loose coupling a
 Alternatively, you can use the Spring Boot Maven plugin: mvn spring-boot:run
 
 ### Mailing Service Email Setup
-Replace yourEmail@gmail.com and <YourEmailPassword> in the application
+Replace example@gmail.com and <YourEmailPassword> in the application
 properties (mailing service) with your actual email and password.
 For enhanced security, especially if Two-Factor Authentication (2FA) is enabled on your Gmail account, 
 it's recommended to use an App Password for SMTP authentication:
